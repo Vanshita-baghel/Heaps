@@ -1,0 +1,26 @@
+PROBLEM STATEMENT:
+Given an array arr of size n, the task is to check if the given array can be a level order representation of a Max Heap.
+
+SOLUTION:
+                                                                                          
+                                                                                            TIME COMPLEXITY: O(N)
+                                                                                            SPACE COMPLEXITY: O(1)
+
+class Solution {
+
+    public boolean countSub(long arr[], long n) {
+        
+        if(n<=1)    return true;
+        
+        long i= (n/2)-1;
+        
+        while(i>=0){
+            long left=(2*i)+1;
+            long right= (2*i)+2;
+            if((left<n && arr[(int)left]>arr[(int)i]) || (right<n && arr[(int)right]>arr[(int)i]))  return false;
+            i--;
+        }
+        return true;
+        
+    }
+}
