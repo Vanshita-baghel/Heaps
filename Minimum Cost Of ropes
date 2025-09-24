@@ -1,0 +1,26 @@
+PROBLEM STATEMENT:
+Given an array, arr[] of rope lengths, connect all ropes into a single rope with the minimum total cost. The cost to connect two ropes is the sum of their lengths. 
+
+SOLUTION:
+
+                                                                                              TIME COMPLEXITY: O(nlogn)+O(nlogn)= O(n logn)
+                                                                                              SPACE COMPLEXITY: O(n)
+class Solution {
+    public static int minCost(int[] arr) {
+        
+        PriorityQueue<Integer> pq= new PriorityQueue<>();
+         
+        for(int i=0; i<arr.length; i++){   //O(N log N)
+            pq.add(arr[i]);
+        }
+        
+        int ans=0;
+        while(pq.size()>1){       //O(N)
+            int e1= pq.poll();    //O(logN)
+            int e2= pq.poll();    //O(logN)
+            pq.add(e1+e2);          //O(logN)
+            ans+= (e1+e2);
+        }
+        return ans;
+    }
+}
