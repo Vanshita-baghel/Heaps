@@ -1,0 +1,50 @@
+PROBLEM STATEMENT:
+Given two binary max heaps as arrays, merge the given heaps to form a new max heap.
+
+SOLUTION:
+
+                                                                                              TIME COMPLEXITY: O(n + m)
+                                                                                              SPACE COMPLEXITY: O(n+m) for array + O(log(n+m)) for recursion stack space
+// User function Template for Java
+
+class Solution {
+    public int[] mergeHeaps(int[] a, int[] b, int n, int m) {
+        
+        int[] c= new int[m+n];
+        int ind=0;
+        for(int e: a){  // O(n)
+            c[ind]= e;
+            ind++;
+        }
+        for(int e: b){  //O(m)
+            c[ind]=e;
+            ind++;
+        }
+        
+        for(int i= (c.length/2)-1; i>=0; i--){  
+            heapify(i, c, c.length);
+        }
+        
+            
+        return c;
+        
+    }
+    public void heapify(int ind, int[] c, int n){
+        int largest=ind;
+        int left= 2*ind +1;
+        int right= 2*ind+2;
+        
+        if(left<n && c[left]>c[largest])    largest=left;
+        if(right<n && c[right]>c[largest])  largest=right;
+        
+        if(largest!=ind){
+            swap(largest,ind, c);
+            heapify(largest, c, n);
+        }
+    }
+    public void swap(int ind1, int ind2, int[] c){
+        int temp= c[ind1];
+        c[ind1]= c[ind2];
+        c[ind2]=temp;
+    }
+}
