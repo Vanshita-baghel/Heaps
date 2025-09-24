@@ -1,0 +1,59 @@
+PROBLEM STATEMENT:
+You are given a binary tree, and the task is to determine whether it satisfies the properties of a max-heap.
+
+A binary tree is considered a max-heap if it satisfies the following conditions:
+
+Completeness: Every level of the tree, except possibly the last, is completely filled, and all nodes are as far left as possible.
+Max-Heap Property: The value of each node is greater than or equal to the values of its children.
+
+SOLUTION:
+                                                                                    TIME COMPLEXITY: O(N+N)= O(N)
+                                                                                    SPACE COMPLEXITY:  O(N)
+/*
+Node defined as
+class Node{
+    int data;
+    Node left,right;
+    Node(int d){
+        data=d;
+        left=right=null;
+    }
+}
+*/
+
+class Solution {
+    boolean isHeap(Node tree) {
+        if(isCompleteBt(tree) && maxHeap(tree))   return true;
+        
+        return false;
+        
+    }
+    
+    public boolean isCompleteBt(Node root){            //TC= O(N),  SC= O(N)
+        Queue<Node> q= new LinkedList<>();
+        q.add(root);
+        boolean nullFound=false;
+        while(!q.isEmpty()){
+            Node node= q.poll();
+            if(node==null)  nullFound=true;
+            else{
+                if(nullFound)   return false;
+                q.add(node.left);
+                q.add(node.right);
+            }
+        }
+        return true;
+    }
+    
+    public boolean maxHeap(Node root){                                    //TC = O(N), SC= O(N)
+        if(root==null)  return true;
+        boolean left= maxHeap(root.left);
+        if(!left)   return false;
+        boolean right= maxHeap(root.right);
+        if(!right)   return false;
+        if((root.left!=null && root.data<root.left.data) || (root.right!=null && root.data<root.right.data) ){
+            return false;
+        }
+        return true;
+    }
+}
