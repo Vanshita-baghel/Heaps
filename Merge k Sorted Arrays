@@ -1,0 +1,47 @@
+PROBLEM STATEMENT:
+Given k sorted arrays arranged in the form of a matrix of size k * k. The task is to merge them into one sorted array. Return the merged sorted array.
+
+SOKTUION:
+                                                                                                TIME COMPLEXITY: O(N*K*logK)
+                                                                                                SPACE COMPLEXITY: O(N*K)
+import java.util.PriorityQueue;
+
+class Solution {
+    // Function to merge k sorted arrays.
+    public static ArrayList<Integer> mergeKArrays(int[][] arr, int K) {
+        
+        ArrayList<Integer> res= new ArrayList<>();
+        
+        PriorityQueue<NodeInfo> pq= new PriorityQueue<>(
+            
+            (a,b)-> a.data-b.data
+                
+        );
+        
+        for(int i=0; i<K; i++){
+            pq.add(new NodeInfo(arr[i][0],i,0));
+        }
+        
+        while(pq.size()>0){
+            NodeInfo smallestNode= pq.poll();
+            res.add(smallestNode.data);
+            int newInd= smallestNode.ind+1;
+            if(newInd<K){
+                pq.add(new NodeInfo(arr[smallestNode.row][newInd], smallestNode.row, newInd));
+            }
+        }
+        
+        return res;
+    }
+}
+class NodeInfo {
+    int data;
+    int row;
+    int ind;
+    NodeInfo(int data, int row, int ind){
+        this.data= data;
+        this.row= row;
+        this.ind= ind;
+    }
+    
+}
