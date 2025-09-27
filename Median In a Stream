@@ -1,0 +1,59 @@
+PROBLEM STATEMENT:
+Given that integers are read from a data stream. Your task is to find the median of the elements read so far.
+
+Median is the middle value in an ordered integer list. If the size of the list is even there is no middle value. So the median is the floor of the average of the two middle values.
+
+For example :
+[2,3,4] - median is 3.
+[2,3] - median is floor((2+3)/2) = 2.
+
+SOLUTION:  
+                                                                                  TIME COMPLEXITY: O(n . logn)
+                                                                                  SPACE COMPLEXITY: O(n)
+
+import java.util.PriorityQueue; 
+
+public class Solution {
+    public static int[] findMedian(int[] arr, int n) {
+        
+        int[] ans= new int[n];
+        int[] median= new int[1];
+        PriorityQueue<Integer> max_heap= new PriorityQueue<>(
+            (a,b)-> b-a
+        );
+        PriorityQueue<Integer> min_heap= new PriorityQueue<>(
+            (a,b)-> a-b
+        );
+        median[0]= -1;
+        for(int i=0; i<arr.length; i++){
+
+            ans[i]= call_median(arr[i],max_heap, min_heap, median);
+        }
+        return ans;
+    }
+    public static int call_median(int element, PriorityQueue<Integer> max_heap, PriorityQueue<Integer> min_heap, int[] median){
+
+        if (max_heap.isEmpty() || element <= max_heap.peek()) {
+            max_heap.add(element);
+        } else {
+            min_heap.add(element);
+        }
+
+        // Step 2: Balance heaps (sizes differ at most by 1)
+        if (max_heap.size() > min_heap.size() + 1) {
+            min_heap.add(max_heap.poll());
+        } else if (min_heap.size() > max_heap.size()) {
+            max_heap.add(min_heap.poll());
+        }
+
+        // Step 3: Calculate median
+        if (max_heap.size() == min_heap.size()) {
+            median[0] = (max_heap.peek() + min_heap.peek()) / 2; // integer median
+        } else {
+            median[0] = max_heap.peek(); // max_heap has one extra element
+        }
+
+        return median[0];
+    }
+
+}
