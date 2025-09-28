@@ -1,0 +1,51 @@
+PROBLEM STATEMENT:
+You are given an array of CPU tasks, each labeled with a letter from A to Z, and a number n. Each CPU interval can be idle or allow the completion of one task. Tasks can be completed in any order, but there's a constraint: there has to be a gap of at least n intervals between two tasks with the same label.
+
+Return the minimum number of CPU intervals required to complete all tasks.
+
+SOLUTION:
+
+                                                                                    TIME COMPLEXITY: O(N)
+                                                                                    SPACE COMPLEXITY: O(1)
+
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        int time=0;
+        int[] freq= new int[26];
+        PriorityQueue<Integer> pq= new PriorityQueue<>(
+            (a,b)-> b-a
+        );
+
+        for(int i=0; i<tasks.length; i++){
+            char ch= tasks[i];
+            freq[ch-'A']++;
+        }
+        for(int i=0; i<freq.length; i++){
+            if(freq[i]>0){
+                pq.add(freq[i]);
+            }
+        }
+
+        while(!pq.isEmpty()){
+
+            List<Integer> temp= new ArrayList<>();
+            for(int i=1; i<=n+1; i++){
+                if(!pq.isEmpty()){
+                    int f= pq.poll();
+                    f--;
+                    temp.add(f);
+                }
+            }
+            for(int t: temp){
+                if(t>0) pq.add(t);
+            }
+            if(pq.isEmpty()){
+                time+= temp.size();
+            }
+            else{
+                time+= n+1;
+            }
+        }
+        return time;
+    }
+}
